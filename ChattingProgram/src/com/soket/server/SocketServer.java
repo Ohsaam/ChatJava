@@ -1,5 +1,6 @@
 package com.soket.server;
 
+import java.awt.Color;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -49,6 +50,23 @@ public class SocketServer extends Thread{
 		{
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public void initDisplay() {
+		jta_log.setLineWrap(true);
+		jf.setBackground(Color.orange);
+		jf.add("Center", jsp_log);
+		jf.setTitle("서버측 로그 출력화면 제공...");
+		jf.setSize(800, 600);
+		jf.setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		
+		SocketServer socketserver = new SocketServer();
+		socketserver.start();
+		socketserver.initDisplay();
 		
 	}
 	
