@@ -81,6 +81,7 @@ public class SocketServerThread extends Thread{
 						broadCasting(200 + "|" + nickName + "|" + message);
 						
 					}break start; 
+					
 				
 		}}
 		
