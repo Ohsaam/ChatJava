@@ -3,6 +3,7 @@ package com.soket.server;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -13,7 +14,7 @@ public class SocketServer extends Thread{
 	 * 왜 스레드를 상속? 설계 자체를 화면처리부 / 통신채널 설정 코드 분리
 	 * 
 	 */
-	List<ChatServerThread> globalList = null;
+	List<SocketServerThread> globalList = null;
 	ServerSocket server = null;
 	Socket socket = null;
 	JFrame jf = new JFrame();
@@ -22,6 +23,35 @@ public class SocketServer extends Thread{
 			 , JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
 			 , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+	public SocketServer() {}
+	
+	@Override
+	public void run()
+	{ 
+		// 서버에 접속해온 클라이언트 스레드 정보를 관리하기 위해 벡터 생성
+		globalList = new Vector<>(); 
+		boolean isFlag = false;
+		try
+		{
+			server = new ServerSocket(3002);
+			jta_log.append("Server Ready.....\n");
+			while(!isFlag)
+			{
+				socket = server.accept(); // 클라이언트 소켓의 주소번지를 가지고 있다.
+				jta_log.append("클라이언트 info : "  + socket + "\n"); // 해당 부분 소켓은 클라이언트 소켓이다.
+				Thread thread = new SocketServerThread(this);
+				thread.start();
+				
+				
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 
 }
