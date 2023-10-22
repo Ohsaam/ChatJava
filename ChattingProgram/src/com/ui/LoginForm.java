@@ -16,13 +16,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.database.MemberDao;
+import com.soket.client.SocketClient;
 
 
 public class LoginForm extends JFrame implements ActionListener {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
-	String nickName="";
 	String imgPath="C:\\Users\\ohjih\\OneDrive\\바탕 화면\\ChatJava\\ChattingProgram\\src\\image\\";
 	// 
 	//D:\WorkSpace_Java\Java\dev_java\\src\image\\;
@@ -37,6 +37,7 @@ public class LoginForm extends JFrame implements ActionListener {
 			new ImageIcon(imgPath+"login.png"));
 	JButton jbtn_join = new JButton(
 			new ImageIcon(imgPath+"confirm.png"));
+	
 
 	// JPanel에 쓰일 이미지아이콘
 	ImageIcon ig = new ImageIcon(imgPath+"main.png");
@@ -113,6 +114,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		String username = jtf_id.getText();
 		String password = jpf_pw.getText();
+		mbv.nickName =  mbv.jtf_nickName.getText();
 		MemberDao dao = MemberDao.getInstance();
 		int rs = dao.findByUsernameAndPassword(username, password);
 		/*
@@ -126,7 +128,12 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
-				MemberListFrame mlf = new MemberListFrame(username);
+				SocketClient sc = new SocketClient(mbv);
+				sc.initDisplay();
+				/*
+				 * 이 부분에 소켓 창을 띄울 수 있게 하면 된다.
+				 * 1. 여
+				 */
 				dispose();
 
 			}

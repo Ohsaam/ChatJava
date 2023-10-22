@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.database.MemberDTO;
 import com.database.MemberDao;
+import com.soket.client.SocketClient;
 
 
 
@@ -50,12 +51,15 @@ public class MemberShipView extends JDialog implements ActionListener{
     JButton jbtn_close = new JButton("닫기");
     ZipCodeView zv = new ZipCodeView(this);
     JPasswordField jpf_pw = new JPasswordField(10);
-
+    SocketClient sc = null;
+    String nickName = null;
     LoginForm lf = null;
     //생성자
 
     public MemberShipView(LoginForm loginForm){
-    	LoginForm lf = loginForm;
+    	this.lf = loginForm;
+    	this.nickName = jtf_nickName.getText();
+    	sc = new SocketClient(this);
     }
     //화면처리부
     public void initDisplay() {
@@ -114,7 +118,11 @@ public class MemberShipView extends JDialog implements ActionListener{
     
     public MemberShipView()
     {
-    	
+    	sc = new SocketClient(this);
+    }
+    
+    public String getNickName() {
+        return jtf_nickName.getText();
     }
 //    public MemberShipView()
 //    {
@@ -194,6 +202,7 @@ public class MemberShipView extends JDialog implements ActionListener{
         member.setPassword(jpf_pw.getText());
         member.setNickname(jtf_nickName.getText());
         MemberDao dao = MemberDao.getInstance();
+        String nickName = jtf_nickName.getText();
         int rs = dao.save(member);
         
         if(obj == jbtn_zipcode) {
@@ -204,7 +213,6 @@ public class MemberShipView extends JDialog implements ActionListener{
         {
         	JOptionPane.showMessageDialog(this,"회원가입이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);
         	//이 지점이다. 디비에 넘겨줘야 되는 부분이
-        	
         	dispose();
         	/*
         	 * 여기는 추후에 디비연동하여 값을 받아와야함

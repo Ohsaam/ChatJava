@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 
+import com.ui.MemberShipView;
+
 
 public class SocketClient extends JFrame implements ActionListener{
 	
@@ -28,7 +30,7 @@ public class SocketClient extends JFrame implements ActionListener{
 	Socket socket = null;
 	ObjectOutputStream 	oos 	= null;//말 하고 싶을 때
 	ObjectInputStream 	ois		= null;//듣기 할 때
-	String 				nickName= null;//닉네임 등록
+	String 			nickName= null;//닉네임 등록
 	
 	////////////////통신과 관련한 전역변수 추가  끝  //////////////
 	JPanel jp_second	  = new JPanel();
@@ -49,14 +51,24 @@ public class SocketClient extends JFrame implements ActionListener{
 	JTextArea jta_display = null;
 	JTextPane jtp = null;
 	JScrollPane jsp_display = null;	
-	
+	MemberShipView msv;
+	public SocketClient()
+	{
+		
+	}
+
+	public SocketClient(MemberShipView memberShipView) {
+		this.msv = memberShipView;
+		this.nickName = msv.getNickName();
+		init();
+	}
 	/**
 	 * 닉네임이 결정하고 나서 init 메소드가 호출된다.
 	 */
 	public void init()
 	{
 		try {
-			socket = new Socket("172.26.0.1",3002);
+			socket = new Socket("172.26.0.1",3003);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos.writeObject(100+"|"+nickName);
@@ -77,7 +89,7 @@ public class SocketClient extends JFrame implements ActionListener{
 		/**
 		 * 이 부분 자세히 보기 -> 키 값을 넘길 떄 
 		 */
-		nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
+	    //nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
 		this.setLayout(new GridLayout(1,2));
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
