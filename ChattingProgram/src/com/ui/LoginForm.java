@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.database.MemberDTO;
 import com.database.MemberDao;
 import com.soket.client.SocketClient;
 
@@ -114,7 +115,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		String username = jtf_id.getText();
 		String password = jpf_pw.getText();
-		String nickName =  mbv.jtf_nickName.getText();
+		MemberDTO member = new MemberDTO();
 		MemberDao dao = MemberDao.getInstance();
 		int rs = dao.findByUsernameAndPassword(username, password);
 		/*
@@ -128,12 +129,13 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
+				 String nickName = member.getNickname();
 				SocketClient sc = new SocketClient();
-				sc.initDisplay(nickName);
+				sc.initDisplay();
 				sc.init();
-				/*
-				 * 이 부분에 소켓 창을 띄울 수 있게 하면 된다.
-				 * 1. 여
+				/**
+				 * 1. 닉네임을 넘겼다. 근데 null값으로 나온다. 왜? 내가 원하는건 MemberShipView 얻은 nickname을 얻어서 
+				 * 소켓통신에서 통신 닉네임을 얻는 것인데 왜 안 되는것인가? 찾아보자. 소켓클라이언트와 멤버쉽뷰 둘 사이 관계를 잘 정의하면 된다.
 				 */
 				dispose();
 

@@ -31,7 +31,7 @@ public class MemberShipView extends JDialog implements ActionListener{
     JLabel jlb_pw = new JLabel("패스워드");
     JTextField jtf_pw = new JTextField(10);
     
-    JLabel jlb_nickName = new JLabel("대화명");
+    JLabel jlb_nickName = new JLabel("닉네임");
     JTextField jtf_nickName = new JTextField(20);
 
 
@@ -57,7 +57,6 @@ public class MemberShipView extends JDialog implements ActionListener{
 
     public MemberShipView(LoginForm loginForm){
     	this.lf = loginForm;
-    	this.nickName = jtf_nickName.getText();
     }
     
     //화면처리부
@@ -119,9 +118,7 @@ public class MemberShipView extends JDialog implements ActionListener{
     {
     }
     
-    public String getNickName() {
-        return jtf_nickName.getText();
-    }
+
 //    public MemberShipView()
 //    {
 //        jbtn_ins.addActionListener(new ActionListener() {
@@ -195,22 +192,32 @@ public class MemberShipView extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     	System.out.println("action");
         Object obj = e.getSource();
-        MemberDTO member = new MemberDTO();
-        member.setUsername(jtf_id.getText());
-        member.setPassword(jpf_pw.getText());
-        member.setNickname(jtf_nickName.getText());
-        MemberDao dao = MemberDao.getInstance();
-        String nickName = jtf_nickName.getText();
-        int rs = dao.save(member);
+//        MemberDTO member = new MemberDTO();
+//        member.setUsername(jtf_id.getText());
+//        member.setPassword(jpf_pw.getText());
+//        member.setNickname(jtf_nickName.getText());
+//        MemberDao dao = MemberDao.getInstance();
+//        String nickName = jtf_nickName.getText();
+//        int rs = dao.save(member);
+        \
+        
+        
         
         if(obj == jbtn_zipcode) {
         	zv.initDisplay();
 
         }
-        else if (obj == jbtn_ins || rs ==1)
+        else if (obj == jbtn_ins)
         {
         	JOptionPane.showMessageDialog(this,"회원가입이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);
         	//이 지점이다. 디비에 넘겨줘야 되는 부분이
+            MemberDTO member = new MemberDTO();
+            member.setUsername(jtf_id.getText());
+            member.setPassword(jpf_pw.getText());
+            member.setNickname(jtf_nickName.getText());
+            MemberDao dao = MemberDao.getInstance();
+            int rs = dao.save(member);
+            
         	dispose();
         	/*
         	 * 여기는 추후에 디비연동하여 값을 받아와야함

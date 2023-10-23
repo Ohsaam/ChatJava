@@ -90,4 +90,22 @@ public class MemberDao {
 
 		return null;
 	}
+	
+	public Vector<String> findNickName() {
+	    conn = DBConnection.getConnection();
+	    Vector<String> nicknames = new Vector<>();
+	    
+	    try {
+	        pstmt = conn.prepareStatement("select nickname from member");
+	        rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            String nickname = rs.getString("nickname");
+	            nicknames.add(nickname);
+	        }
+	        return nicknames;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
 }

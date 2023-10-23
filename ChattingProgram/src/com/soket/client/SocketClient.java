@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,6 +22,7 @@ import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.database.MemberDTO;
+import com.database.MemberDao;
 import com.ui.MemberListFrame;
 import com.ui.MemberShipView;
 
@@ -32,7 +34,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	Socket 				socket 	= null;
 	ObjectOutputStream 	oos 	= null;//말 하고 싶을 때
 	ObjectInputStream 	ois		= null;//듣기 할 때
-	String 				nickName= null;//닉네임 등록
+	String 				nickName;//닉네임 등록
 	////////////////통신과 관련한 전역변수 추가  끝  //////////////
 	JPanel jp_second	  = new JPanel();
 	JPanel jp_second_south = new JPanel();
@@ -58,8 +60,18 @@ public class SocketClient extends JFrame implements ActionListener {
 		jbtn_change.addActionListener(this);
 	}
 
-	public void initDisplay(String nickName) {
-		nickName = nickName;
+	public void initDisplay() {
+	    MemberDao memberDao = MemberDao.getInstance();
+	    Vector<String> availableNicknames = memberDao.findNickName();
+
+	    // 사용 가능한 닉네임 중 하나를 선택
+	    nickName = (String) JOptionPane.showInputDialog(this, "사용 가능한 닉네임을 선택하세요:", "닉네임 선택",
+	        JOptionPane.PLAIN_MESSAGE, null, availableNicknames.toArray(), availableNicknames.get(0));
+
+	    if (nickName == null) {
+	        JOptionPane.showMessageDialog(this, "닉네임을 선택해야 합니다. 프로그램을 종료합니다.", "알림", JOptionPane.ERROR_MESSAGE);
+	        System.exit(0);
+	    }
 		//사용자의 닉네임 받기
 		//nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
 		this.setLayout(new GridLayout(1,2));
