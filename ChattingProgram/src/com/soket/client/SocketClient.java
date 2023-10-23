@@ -20,10 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 
+import com.database.zipcodeview.NicknameDTO;
 import com.ui.MemberShipView;
 
 
 public class SocketClient extends JFrame implements ActionListener{
+	
 	
 	
 ////////////////통신과 관련한 전역변수 추가 시작//////////////
@@ -59,7 +61,7 @@ public class SocketClient extends JFrame implements ActionListener{
 
 	public SocketClient(MemberShipView memberShipView) {
 		this.msv = memberShipView;
-		this.nickName = msv.getNickName();
+		this.nickName = NicknameDTO.getNickName();
 		init();
 	}
 	/**
@@ -68,7 +70,7 @@ public class SocketClient extends JFrame implements ActionListener{
 	public void init()
 	{
 		try {
-			socket = new Socket("172.26.0.1",3003);
+			socket = new Socket("127.0.0.1",3003);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos.writeObject(100+"|"+nickName);

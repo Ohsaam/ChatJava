@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 public class SocketClientThread extends Thread{
 
 	SocketClient socketClient = null;
+	String nickName = null;
 	
 	public SocketClientThread(SocketClient socketClient) {
 

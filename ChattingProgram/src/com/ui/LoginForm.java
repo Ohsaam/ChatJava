@@ -23,7 +23,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
-	String imgPath="C:\\Users\\ohjih\\OneDrive\\바탕 화면\\ChatJava\\ChattingProgram\\src\\image\\";
+	String imgPath="C:\\Users\\GDJ\\Desktop\\ChatJava\\ChattingProgram\\src\\image\\";
 	// 
 	//D:\WorkSpace_Java\Java\dev_java\\src\image\\;
 	JLabel jlb_id = new JLabel("아이디");
