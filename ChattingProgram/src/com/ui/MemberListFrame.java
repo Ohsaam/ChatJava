@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.database.MemberDTO;
 import com.database.MemberDao;
+import com.soket.client.SocketClient;
 
 
 public class MemberListFrame extends JFrame implements ActionListener{

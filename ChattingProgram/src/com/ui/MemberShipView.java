@@ -51,7 +51,6 @@ public class MemberShipView extends JDialog implements ActionListener{
     JButton jbtn_close = new JButton("닫기");
     ZipCodeView zv = new ZipCodeView(this);
     JPasswordField jpf_pw = new JPasswordField(10);
-    SocketClient sc = null;
     String nickName = null;
     LoginForm lf = null;
     //생성자
@@ -59,8 +58,8 @@ public class MemberShipView extends JDialog implements ActionListener{
     public MemberShipView(LoginForm loginForm){
     	this.lf = loginForm;
     	this.nickName = jtf_nickName.getText();
-    	sc = new SocketClient();
     }
+    
     //화면처리부
     public void initDisplay() {
     	jbtn_close.addActionListener(this);

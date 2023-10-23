@@ -23,7 +23,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
-	String imgPath="C:\\Users\\GDJ\\Desktop\\ChatJava\\ChattingProgram\\src\\image\\";
+	String imgPath="C:\\Users\\ohjih\\OneDrive\\바탕 화면\\ChatJava\\ChattingProgram\\src\\image\\";
 	// 
 	//D:\WorkSpace_Java\Java\dev_java\\src\image\\;
 	JLabel jlb_id = new JLabel("아이디");
@@ -114,7 +114,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 		String username = jtf_id.getText();
 		String password = jpf_pw.getText();
-		mbv.nickName =  mbv.jtf_nickName.getText();
+		String nickName =  mbv.jtf_nickName.getText();
 		MemberDao dao = MemberDao.getInstance();
 		int rs = dao.findByUsernameAndPassword(username, password);
 		/*
@@ -129,7 +129,8 @@ public class LoginForm extends JFrame implements ActionListener {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
 				SocketClient sc = new SocketClient();
-				sc.initDisplay();
+				sc.initDisplay(nickName);
+				sc.init();
 				/*
 				 * 이 부분에 소켓 창을 띄울 수 있게 하면 된다.
 				 * 1. 여

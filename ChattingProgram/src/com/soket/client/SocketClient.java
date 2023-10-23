@@ -21,6 +21,7 @@ import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.database.MemberDTO;
+import com.ui.MemberListFrame;
 import com.ui.MemberShipView;
 
 
@@ -50,15 +51,17 @@ public class SocketClient extends JFrame implements ActionListener {
 	JButton jbtn_send  = new JButton("전송");//south속지 east
 	JTextArea jta_display = null;
 	JScrollPane jsp_display = null;
-	
+	MemberShipView sv = null;
 	public SocketClient() {
 		jtf_msg.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_change.addActionListener(this);
 	}
-	public void initDisplay() {
+
+	public void initDisplay(String nickName) {
+		nickName = nickName;
 		//사용자의 닉네임 받기
-		nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
+		//nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
 		this.setLayout(new GridLayout(1,2));
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
@@ -88,15 +91,12 @@ public class SocketClient extends JFrame implements ActionListener {
 	}
 	public static void main(String args[]) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		SocketClient tc = new SocketClient();
-		tc.initDisplay();
-		tc.init();
 	}
 	//소켓 관련 초기화
 	public void init() {
 		try {
 			//서버측의 ip주소 작성하기
-			socket = new Socket("127.0.0.1",3002);
+			socket = new Socket("172.30.1.66",3002);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			//initDisplay에서 닉네임이 결정된 후 init메소드가 호출되므로
