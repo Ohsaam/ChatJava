@@ -128,7 +128,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
-				SocketClient sc = new SocketClient(mbv);
+				SocketClient sc = new SocketClient();
 				sc.initDisplay();
 				/*
 				 * 이 부분에 소켓 창을 띄울 수 있게 하면 된다.

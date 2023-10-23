@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 
 import com.database.MemberDTO;
 import com.database.MemberDao;
-import com.database.zipcodeview.NicknameDTO;
 import com.soket.client.SocketClient;
 
 
@@ -60,8 +59,7 @@ public class MemberShipView extends JDialog implements ActionListener{
     public MemberShipView(LoginForm loginForm){
     	this.lf = loginForm;
     	this.nickName = jtf_nickName.getText();
-    	NicknameDTO.setNickName(nickName);
-    	sc = new SocketClient(this);
+    	sc = new SocketClient();
     }
     //화면처리부
     public void initDisplay() {
@@ -122,7 +120,9 @@ public class MemberShipView extends JDialog implements ActionListener{
     {
     }
     
-
+    public String getNickName() {
+        return jtf_nickName.getText();
+    }
 //    public MemberShipView()
 //    {
 //        jbtn_ins.addActionListener(new ActionListener() {
