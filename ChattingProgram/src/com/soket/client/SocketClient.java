@@ -23,8 +23,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.database.MemberDTO;
 import com.database.MemberDao;
+import com.ui.LoginForm;
 import com.ui.MemberListFrame;
 import com.ui.MemberShipView;
+
 
 
 
@@ -53,27 +55,42 @@ public class SocketClient extends JFrame implements ActionListener {
 	JButton jbtn_send  = new JButton("전송");//south속지 east
 	JTextArea jta_display = null;
 	JScrollPane jsp_display = null;
-	MemberShipView sv = null;
+	
+	
+	
 	public SocketClient() {
+
+	}
+	
+	
+
+	public SocketClient(String nickName2) {
+		this.nickName = nickName2;
+	}
+
+
+
+	/**
+	 * 막히는 부분 정리
+	 * 1. 닉네임을 넘겨 받았음 근데 닉네임을 갖고 온 클라이언트에서 엔터, 전송, 1:1 대화, 닉네임 변경이 안된다. ->why? initDisplay 문제는 아니다. actionPerformed에서 닉네임을 읽어오지 못하는 것인가?
+	 * 
+	 */
+	public void initDisplay() {
+		
+
+	    // 사용 가능한 닉네임 중 하나를 선택
+//	    nickName = (String) JOptionPane.showInputDialog(this, "사용 가능한 닉네임을 선택하세요:", "닉네임 선택",
+//	        JOptionPane.PLAIN_MESSAGE, null, availableNicknames.toArray(), availableNicknames.get(0));
+//
+//	    if (nickName == null) {
+//	        JOptionPane.showMessageDialog(this, "닉네임을 선택해야 합니다. 프로그램을 종료합니다.", "알림", JOptionPane.ERROR_MESSAGE);
+//	        System.exit(0);
+//	    }
+		//사용자의 닉네임 받기
+		//nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
 		jtf_msg.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_change.addActionListener(this);
-	}
-
-	public void initDisplay() {
-	    MemberDao memberDao = MemberDao.getInstance();
-	    Vector<String> availableNicknames = memberDao.findNickName();
-
-	    // 사용 가능한 닉네임 중 하나를 선택
-	    nickName = (String) JOptionPane.showInputDialog(this, "사용 가능한 닉네임을 선택하세요:", "닉네임 선택",
-	        JOptionPane.PLAIN_MESSAGE, null, availableNicknames.toArray(), availableNicknames.get(0));
-
-	    if (nickName == null) {
-	        JOptionPane.showMessageDialog(this, "닉네임을 선택해야 합니다. 프로그램을 종료합니다.", "알림", JOptionPane.ERROR_MESSAGE);
-	        System.exit(0);
-	    }
-		//사용자의 닉네임 받기
-		//nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
 		this.setLayout(new GridLayout(1,2));
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
@@ -103,12 +120,14 @@ public class SocketClient extends JFrame implements ActionListener {
 	}
 	public static void main(String args[]) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
+		SocketClient sc = new SocketClient();
+		sc.initDisplay();
+		sc.init();
 	}
-	//소켓 관련 초기화
 	public void init() {
 		try {
 			//서버측의 ip주소 작성하기
-			socket = new Socket("172.30.1.66",3002);
+			socket = new Socket("172.16.2.7",3002);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			//initDisplay에서 닉네임이 결정된 후 init메소드가 호출되므로
@@ -122,8 +141,16 @@ public class SocketClient extends JFrame implements ActionListener {
 			System.out.println(e.toString());
 		}
 	}
+	/*
+	 * 해당 단위 테스트 했을 때는 모든 기능이 작동된다. -> 그렇게 된다면 로그인 시 닉네임을 여기서 받아들이지 못하고 기능구현을 못하고 있는 것이 맞다.
+	 * 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		/**
+		 * 이 지점에서 닉네임을 읽어들이지 못하는 문제가 발생했다. -> 서버, 서버스레드에 대한 문제는 없다.
+		 */
+		
 		Object obj = ae.getSource();
 		String msg = jtf_msg.getText();
 		if(jbtn_one == obj) {
@@ -139,6 +166,8 @@ public class SocketClient extends JFrame implements ActionListener {
 				// TODO: handle exception
 			}
 		}
+		
+		
 		else if(jbtn_exit==obj) {
 			try {
 				oos.writeObject(500+"#"+this.nickName);
@@ -148,6 +177,8 @@ public class SocketClient extends JFrame implements ActionListener {
 				// TODO: handle exception
 			}
 		}
+		
+		
 		else if(jbtn_change == obj) {
 			String afterName = JOptionPane.showInputDialog("변경할 대화명을 입력하세요.");
 			if(afterName == null || afterName.trim().length()<1) {

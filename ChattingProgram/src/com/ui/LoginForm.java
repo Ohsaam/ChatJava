@@ -24,7 +24,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
-	String imgPath="C:\\Users\\ohjih\\OneDrive\\바탕 화면\\ChatJava\\ChattingProgram\\src\\image\\";
+	String imgPath="C:\\Users\\GDJ\\Desktop\\ChatJava\\ChattingProgram\\src\\image\\";
 	// 
 	//D:\WorkSpace_Java\Java\dev_java\\src\image\\;
 	JLabel jlb_id = new JLabel("아이디");
@@ -129,13 +129,15 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
-				 String nickName = member.getNickname();
-				SocketClient sc = new SocketClient();
+				 String nickName = dao.findNicknameByUsernameAndPassword(username, password);
+				SocketClient sc = new SocketClient(nickName);
 				sc.initDisplay();
 				sc.init();
 				/**
 				 * 1. 닉네임을 넘겼다. 근데 null값으로 나온다. 왜? 내가 원하는건 MemberShipView 얻은 nickname을 얻어서 
 				 * 소켓통신에서 통신 닉네임을 얻는 것인데 왜 안 되는것인가? 찾아보자. 소켓클라이언트와 멤버쉽뷰 둘 사이 관계를 잘 정의하면 된다.
+				 * -> 디비를 통해서 뽑아오는 아이디로 수정완료 했다. 하지만 아이디를 읽어오긴 했지만 actionperformed에 대해서는 클릭이 안 된다.
+				 * 닉네임을 공유한다. 
 				 */
 				dispose();
 

@@ -199,7 +199,6 @@ public class MemberShipView extends JDialog implements ActionListener{
 //        MemberDao dao = MemberDao.getInstance();
 //        String nickName = jtf_nickName.getText();
 //        int rs = dao.save(member);
-        \
         
         
         

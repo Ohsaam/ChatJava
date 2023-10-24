@@ -108,4 +108,24 @@ public class MemberDao {
 	    }
 	    return null;
 	}
+	
+	public String findNicknameByUsernameAndPassword(String username, String password) {
+	    conn = DBConnection.getConnection();
+	    
+	    try {
+	        pstmt = conn.prepareStatement("select nickname from member where username = ? and password = ?");
+	        pstmt.setString(1, username);
+	        pstmt.setString(2, password);
+	        rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            return rs.getString("nickname");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return null;
+	}
+	
 }
