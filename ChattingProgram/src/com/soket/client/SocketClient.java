@@ -1,6 +1,7 @@
 package com.soket.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -58,7 +59,6 @@ public class SocketClient extends JFrame implements ActionListener {
 	JScrollPane jsp_display = null;
 	
 	
-	
 	public SocketClient() {
 
 	}
@@ -94,6 +94,7 @@ public class SocketClient extends JFrame implements ActionListener {
 		jtf_msg.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_change.addActionListener(this);
+		jbtn_font.addActionListener(this);
 		this.setLayout(new GridLayout(1,2));
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
@@ -158,6 +159,8 @@ public class SocketClient extends JFrame implements ActionListener {
 		
 		Object obj = ae.getSource();
 		String msg = jtf_msg.getText();
+		
+		
 		 if(jbtn_send == obj)
 		{
 			try {
@@ -169,6 +172,19 @@ public class SocketClient extends JFrame implements ActionListener {
 				// TODO: handle exception
 			}
 		}
+		 else if (obj == jbtn_font)
+		 {
+			 /**
+			  * 구글참고
+			  */
+		        Color currentColor = jta_display.getForeground();
+		        if (Color.RED.equals(currentColor)) {
+		            jta_display.setForeground(Color.BLACK);
+		        } else {
+		            jta_display.setForeground(Color.RED);
+		        }}
+		 
+		 
 		else if(jtf_msg==obj) {
 			try {
 				oos.writeObject(201
@@ -181,7 +197,9 @@ public class SocketClient extends JFrame implements ActionListener {
 		}
 		
 		else if (jbtn_del == obj) {
-			deleteSelectedRow();
+//			int selected=jtb.getSelectedRow();
+//			removeRecord(selected);
+			 deleteSelectedRow();
 		}
 			
 		
@@ -219,36 +237,66 @@ public class SocketClient extends JFrame implements ActionListener {
 
 	
 
+//	public void deleteSelectedRow() {
+//	    int index = jtb.getSelectedRow();
+//	    if (index < 0) {
+//	        JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하시오.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+//	        return;
+//	    }
+//	    String nicknameToDelete = (String) jtb.getValueAt(index, 0);
+//
+//	    MemberDao dao = MemberDao.getInstance();
+//	    int result = dao.deleteMemberByNickname(nicknameToDelete);
+//	    
+//	    if (result == 1) {
+//	        JOptionPane.showMessageDialog(this, "삭제 성공하였습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
+//	        refreshTable();
+//	    } else {
+//	        JOptionPane.showMessageDialog(this, "삭제에 실패했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
+//	    }
+//	}
+//
+//	public void removeRecord(int index) {
+//		DefaultTableModel model=(DefaultTableModel)jtb.getModel();
+//		if(index<0) {
+//			if(jtb.getRowCount()==0)//비어있는 테이블이면
+//				return;
+//			index=0;
+//		}
+//		model.removeRow(index);
+//	}
+//	public void refreshTable() {
+//		 
+//	    while (dtm.getRowCount() > 0) {
+//	        dtm.removeRow(0);
+//	    }
+//	    
+//	    MemberDao dao = MemberDao.getInstance();
+//	    Vector<String> nicknames = dao.findNickName();
+//	    
+//	    for (String nickname : nicknames) {
+//	        dtm.addRow(new String[] { nickname });
+//	    }
+//	}
+	
 	public void deleteSelectedRow() {
-	    int index = jtb.getSelectedRow();
-	    if (index < 0) {
-	        JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하시오.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+	    int selectedRow = jtb.getSelectedRow();
+	    MemberDao dao = MemberDao.getInstance();
+	    if (selectedRow < 0) {
+	        JOptionPane.showMessageDialog(this, "삭제할 부분을 고르세요", "Info", JOptionPane.INFORMATION_MESSAGE);
 	        return;
 	    }
-	    String nicknameToDelete = (String) jtb.getValueAt(index, 0);
 
-	    MemberDao dao = MemberDao.getInstance();
+	    String nicknameToDelete = (String) jtb.getValueAt(selectedRow, 0);
+
 	    int result = dao.deleteMemberByNickname(nicknameToDelete);
-	    
-	    if (result == 1) {
-	        JOptionPane.showMessageDialog(this, "삭제 성공하였습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
-	        refreshTable();
-	    } else {
-	        JOptionPane.showMessageDialog(this, "삭제에 실패했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
 
-	public void refreshTable() {
-		 
-	    while (dtm.getRowCount() > 0) {
-	        dtm.removeRow(0);
-	    }
-	    
-	    MemberDao dao = MemberDao.getInstance();
-	    Vector<String> nicknames = dao.findNickName();
-	    
-	    for (String nickname : nicknames) {
-	        dtm.addRow(new Object[] { nickname });
+	    if (result > 0) {
+	        DefaultTableModel model = (DefaultTableModel) jtb.getModel();
+	        model.removeRow(selectedRow);
+	        JOptionPane.showMessageDialog(this, "성공적으로 삭제됐습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	    } else {
+	        JOptionPane.showMessageDialog(this, "삭제 실패했습니다..", "Error", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
 }

@@ -140,7 +140,6 @@ public class LoginForm extends JFrame implements ActionListener {
 			}
 			else
 			{
-				System.out.println("읽히니?");
 				try{JOptionPane.showMessageDialog(null, "로그인 실패");}
 				catch (Exception e1) {e1.printStackTrace(); }
 					// TODO: handle exception
