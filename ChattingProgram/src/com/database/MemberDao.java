@@ -128,4 +128,25 @@ public class MemberDao {
 	    return null;
 	}
 	
+	
+	public int deleteMemberByNickname(String nicknameToDelete) {
+	    conn = DBConnection.getConnection();
+
+	    try {
+	        pstmt = conn.prepareStatement("DELETE FROM member WHERE nickname = ?");
+	        pstmt.setString(1, nicknameToDelete);
+
+	        int rowCount = pstmt.executeUpdate();
+
+	        return rowCount; // 삭제된 레코드 수 반환
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        // 여기에서 리소스를 닫아야 합니다.
+	    }
+
+	    return -1; // 삭제 실패
+	}
+	
 }

@@ -88,6 +88,7 @@ public class SocketServerThread extends Thread {
 								+"#"+afterName
         						+"#"+message);
 					}break;
+
 					case 500:{
 						String nickName = st.nextToken();
 						ts.globalList.remove(this);
