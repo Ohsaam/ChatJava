@@ -88,6 +88,15 @@ public class SocketServerThread extends Thread {
 								+"#"+afterName
         						+"#"+message);
 					}break;
+					
+//					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
+//					{
+//						String nickName = st.nextToken();
+//						String message = st.nextToken() ;
+//						broadCasting(210
+//								+"#"+nickName + "#" + message);
+//						
+//					}break;
 
 					case 500:{
 						String nickName = st.nextToken();

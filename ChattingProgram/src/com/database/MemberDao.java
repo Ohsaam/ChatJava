@@ -17,6 +17,7 @@ public class MemberDao {
 	private PreparedStatement pstmt; //Query 작성 객체
 	private ResultSet rs; //Query 결과 커서
 	
+	
 	//성공 1, 실패 -1, 없음 0
 	public int findByUsernameAndPassword(String username, String password) {
 		//1. DB 연결
@@ -143,7 +144,6 @@ public class MemberDao {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        // 여기에서 리소스를 닫아야 합니다.
 	    }
 
 	    return -1; // 삭제 실패

@@ -41,12 +41,10 @@ public class SocketClient extends JFrame implements ActionListener {
 	JPanel jp_second	  = new JPanel();
 	JPanel jp_second_south = new JPanel();
 	
-	JButton jbtn_one	  = new JButton("1:1");
 	JButton jbtn_change	  = new JButton("대화명변경");
 	JButton jbtn_font	  = new JButton("글자색");
 	JButton jbtn_exit	  = new JButton("나가기");
 	JButton jbtn_del = new JButton("삭제");
-	JButton jbtn_list = new JButton("회원리스트");
 	String cols[] 		  = {"대화명"};
 	String data[][] 	  = new String[0][1];
 	DefaultTableModel dtm = new DefaultTableModel(data,cols);
@@ -96,13 +94,10 @@ public class SocketClient extends JFrame implements ActionListener {
 		jtf_msg.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_change.addActionListener(this);
-		jbtn_list.addActionListener(this);
 		this.setLayout(new GridLayout(1,2));
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
 		jp_second_south.setLayout(new GridLayout(2,2));
-		jp_second_south.add(jbtn_list);
-		jp_second_south.add(jbtn_one);
 		jp_second_south.add(jbtn_change);
 		jp_second_south.add(jbtn_del);
 		
@@ -151,10 +146,7 @@ public class SocketClient extends JFrame implements ActionListener {
 			System.out.println(e.toString());
 		}
 	}
-	/*
-	 * 해당 단위 테스트 했을 때는 모든 기능이 작동된다. -> 그렇게 된다면 로그인 시 닉네임을 여기서 받아들이지 못하고 기능구현을 못하고 있는 것이 맞다.
-	 * 
-	 */
+
 	
 	
 
@@ -166,10 +158,7 @@ public class SocketClient extends JFrame implements ActionListener {
 		
 		Object obj = ae.getSource();
 		String msg = jtf_msg.getText();
-		if(jbtn_one == obj) {
-			
-		}
-		else if(jbtn_send == obj)
+		 if(jbtn_send == obj)
 		{
 			try {
 				oos.writeObject(201
@@ -192,22 +181,7 @@ public class SocketClient extends JFrame implements ActionListener {
 		}
 		
 		else if (jbtn_del == obj) {
-		    int index = jtb.getSelectedRow();
-		    if (index < 0) {
-		        JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하시오.", "INFO", JOptionPane.INFORMATION_MESSAGE);
-		        return;
-		    } else {
-		        String nicknameToDelete = (String) jtb.getValueAt(index, 0);
-		        MemberDao dao = MemberDao.getInstance();
-		        int result = dao.deleteMemberByNickname(nicknameToDelete);
-		        if (result == 1) {
-		        	JOptionPane.showMessageDialog(this, "삭제 성공하였습니다.","Info" , JOptionPane.INFORMATION_MESSAGE);
-		        	refresh(nicknameToDelete);
-		        	
-		        } else {
-		            JOptionPane.showMessageDialog(this, "삭제에 실패했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
-		        }
-		    }
+			deleteSelectedRow();
 		}
 			
 		
@@ -245,20 +219,36 @@ public class SocketClient extends JFrame implements ActionListener {
 
 	
 
-public void refresh(String nicknameToSearch) {
-    // 테이블의 현재 행을 모두 지운다.
-    while (dtm.getRowCount() > 0) {
-        dtm.removeRow(0);
-    }
+	public void deleteSelectedRow() {
+	    int index = jtb.getSelectedRow();
+	    if (index < 0) {
+	        JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하시오.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+	    String nicknameToDelete = (String) jtb.getValueAt(index, 0);
 
-    // 데이터베이스에서 해당 닉네임을 가진 회원을 검색
-    MemberDao dao = MemberDao.getInstance();
-    int result = dao.deleteMemberByNickname(nicknameToSearch);
+	    MemberDao dao = MemberDao.getInstance();
+	    int result = dao.deleteMemberByNickname(nicknameToDelete);
+	    
+	    if (result == 1) {
+	        JOptionPane.showMessageDialog(this, "삭제 성공하였습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        refreshTable();
+	    } else {
+	        JOptionPane.showMessageDialog(this, "삭제에 실패했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
 
-    Vector<String> nicknames = dao.findNickName();
-    for (String nickname : nicknames) {
-    	dtm.addRow(new Object[] { nickname });
-        }
-}
-
+	public void refreshTable() {
+		 
+	    while (dtm.getRowCount() > 0) {
+	        dtm.removeRow(0);
+	    }
+	    
+	    MemberDao dao = MemberDao.getInstance();
+	    Vector<String> nicknames = dao.findNickName();
+	    
+	    for (String nickname : nicknames) {
+	        dtm.addRow(new Object[] { nickname });
+	    }
+	}
 }

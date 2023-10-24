@@ -208,16 +208,25 @@ public class MemberShipView extends JDialog implements ActionListener{
         }
         else if (obj == jbtn_ins)
         {
-        	JOptionPane.showMessageDialog(this,"회원가입이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);
-        	//이 지점이다. 디비에 넘겨줘야 되는 부분이
-            MemberDTO member = new MemberDTO();
-            member.setUsername(jtf_id.getText());
-            member.setPassword(jpf_pw.getText());
-            member.setNickname(jtf_nickName.getText());
-            MemberDao dao = MemberDao.getInstance();
-            int rs = dao.save(member);
+        	if(isInputValid())
+        	{
+        		 MemberDTO member = new MemberDTO();
+                 member.setUsername(jtf_id.getText());
+                 member.setPassword(jpf_pw.getText());
+                 member.setNickname(jtf_nickName.getText());
+                 MemberDao dao = MemberDao.getInstance();
+                 int rs = dao.save(member);
+                 if(rs == 1)
+                 {
+                	 JOptionPane.showMessageDialog(this, "회원가입이 완료되었습니다.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+                     dispose();
+                 }
+                 else
+                 {
+                	 JOptionPane.showMessageDialog(this, "회원가입이 실패하였습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                 }
+        	}
             
-        	dispose();
         	/*
         	 * 여기는 추후에 디비연동하여 값을 받아와야함
         	 */
@@ -226,7 +235,33 @@ public class MemberShipView extends JDialog implements ActionListener{
 
         else if(obj == jbtn_close)
         {
+        	
         	JOptionPane.showMessageDialog(this,"회원가입이 실패하였습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);
         	dispose();
         }
-    }}
+    }
+
+//사용자 입력이 유효한지 검증
+
+    /**
+     * @inInputVaild() : 메소드
+     * 1. 회원가입 창에서 모든 필드를 입력 할 수 있도록 하는 메소드 -> 어디서 사용? -> (obj == jbtn_ins) 
+     * @return boolean --> if문 내에서 사용하기 위해서 
+     */
+private boolean isInputValid() {
+ if (isEmptyOrNull(jtf_id.getText()) ||
+     isEmptyOrNull(jpf_pw.getText()) ||
+     isEmptyOrNull(jtf_nickName.getText()) ||
+     isEmptyOrNull(jtf_name.getText()) ||
+     isEmptyOrNull(jtf_zipcode.getText()) ||
+     isEmptyOrNull(jtf_address.getText())) {
+     JOptionPane.showMessageDialog(this, "필드를 모두 채워주세요.", "ERROR", JOptionPane.ERROR_MESSAGE);
+     return false;
+ }
+ return true;
+}
+
+//문자열이 비어 있는지 또는 null인지 확인
+private boolean isEmptyOrNull(String str) {
+ return str == null || str.trim().isEmpty();
+}}
