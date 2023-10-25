@@ -1,5 +1,6 @@
 package com.soket.server;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -42,6 +43,37 @@ public class SocketServerThread extends Thread {
 			tst.send(msg);
 		}
 	}
+	public void LogoutRequest(String nickName) {
+	    try {
+	        String message = nickName + "님이 퇴장하였습니다.";
+	        broadCasting(210 + "#" + nickName + "#" + message);
+	        // 사용자 목록 업데이트
+	        removeList(nickName);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	// 사용자 목록에서 사용자 제거
+	public void removeList(String nickName) {
+	    for (SocketServerThread tst : ts.globalList) {
+	        if (tst != null && tst.chatName.equals(nickName)) {
+	            ts.globalList.remove(tst);
+	            break;
+	        }
+	    }
+	}
+
+	
+	// 사용자 목록을 클라이언트에게 전송
+	public void sendUserList(SocketServerThread clientThread) throws IOException {
+	    StringBuilder userListMessage = new StringBuilder("100#");
+	    for (SocketServerThread t : ts.globalList) {
+	        userListMessage.append(t.chatName).append("#");
+	    }
+	    clientThread.send(userListMessage.toString());
+	}
+	
 	//클라이언트에게 말하기 구현
 	public void send(String msg) {
 		try {
@@ -89,14 +121,17 @@ public class SocketServerThread extends Thread {
         						+"#"+message);
 					}break;
 					
-//					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
-//					{
-//						String nickName = st.nextToken();
-//						String message = st.nextToken() ;
-//						broadCasting(210
-//								+"#"+nickName + "#" + message);
-//						
-//					}break;
+					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
+					{
+						String nickName = st.nextToken();
+						String message = st.nextToken();
+						String del = "회원탈퇴 했습니다.";
+						broadCasting(210
+								+"#"+nickName + "#" + del);
+						oos.writeObject(210 + "#" + nickName + "#"+ del);
+						
+						
+					}break;
 
 					case 500:{
 						String nickName = st.nextToken();

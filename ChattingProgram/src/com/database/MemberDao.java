@@ -118,7 +118,10 @@ public class MemberDao {
 	        pstmt.setString(1, username);
 	        pstmt.setString(2, password);
 	        rs = pstmt.executeQuery();
-	        
+	        /**
+	         *  메소드는 현재 레코드의 다음 레코드로 이동하고, 다음 레코드가 있으면 true를 반환하고,
+	         *  레코드가 없으면 false를 반환
+	         */
 	        if (rs.next()) {
 	            return rs.getString("nickname");
 	        }

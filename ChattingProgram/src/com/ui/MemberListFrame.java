@@ -31,7 +31,10 @@ public class MemberListFrame extends JFrame implements ActionListener{
 	private JTable table;
 	String username;
 
-
+	JButton jbtn_select	  = new JButton("조회");
+	JButton jbtn_correction = new JButton("수정");
+	JButton jbtn_del = new JButton("삭제");
+	
 	private JLabel lbTitle;
 	private JButton logoutBtn;
 	private DefaultTableModel tableModel;
@@ -40,10 +43,6 @@ public class MemberListFrame extends JFrame implements ActionListener{
 	 */
 	
 
-	public MemberListFrame()
-	{
-		
-	}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,7 +59,7 @@ public class MemberListFrame extends JFrame implements ActionListener{
 	 * 이 쪽이 문제다. String username이 나왔는데, 이 부분이 nullPointException이 나오는 부분이다.
 	 * @param memberShipView 
 	 */
-	public MemberListFrame(String username) {
+	public MemberListFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1032, 584);
 		setLocationRelativeTo(null);
@@ -91,8 +90,10 @@ public class MemberListFrame extends JFrame implements ActionListener{
 			row.addElement(members.get(i).getNickname());
 			tableModel.addRow(row);
 		}
-
 		
+		jbtn_select.addActionListener(this);
+		jbtn_correction.addActionListener(this);
+		jbtn_del.addActionListener(this);
 		//tableModel을 JTable에 넣기
 		table = new JTable(tableModel);
 		table.setFont(new Font("돋움", Font.PLAIN, 20));
@@ -102,7 +103,7 @@ public class MemberListFrame extends JFrame implements ActionListener{
 		JScrollPane scrollPane = new JScrollPane(table);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
-		logoutBtn = new JButton("로그아웃");
+		logoutBtn = new JButton("나가기");
 		contentPane.add(logoutBtn, BorderLayout.SOUTH);
 		logoutBtn.addActionListener(this);
 		setVisible(true);
@@ -113,16 +114,13 @@ public class MemberListFrame extends JFrame implements ActionListener{
 		Object obj = e.getSource();
 		if(obj == logoutBtn)
 		{
-			JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.");
+			JOptionPane.showMessageDialog(null, "채팅창으로 돌아갑니다.");
+			
 			dispose();
-			new MemberShipView();
+			
 		}
 		
-		else if (username == null)
-		{
-			JOptionPane.showMessageDialog(null, "인증되지 않은 사용자 입니다.");
-			dispose();
-		}
+
 		else
 		{
 			setVisible(true);	

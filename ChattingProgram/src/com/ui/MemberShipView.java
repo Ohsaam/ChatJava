@@ -116,6 +116,7 @@ public class MemberShipView extends JDialog implements ActionListener{
     
     public MemberShipView()
     {
+    	
     }
     
 

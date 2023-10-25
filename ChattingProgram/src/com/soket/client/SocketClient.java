@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.database.MemberDTO;
 import com.database.MemberDao;
+import com.soket.server.Protocol;
 import com.ui.LoginForm;
 import com.ui.MemberListFrame;
 import com.ui.MemberShipView;
@@ -38,14 +40,16 @@ public class SocketClient extends JFrame implements ActionListener {
 	ObjectOutputStream 	oos 	= null;//말 하고 싶을 때
 	ObjectInputStream 	ois		= null;//듣기 할 때
 	String 				nickName;//닉네임 등록
+	String					 contents;
+
 	////////////////통신과 관련한 전역변수 추가  끝  //////////////
 	JPanel jp_second	  = new JPanel();
 	JPanel jp_second_south = new JPanel();
-	
 	JButton jbtn_change	  = new JButton("대화명변경");
+	JButton jbtn_list	  = new JButton("회원 리스트");
 	JButton jbtn_font	  = new JButton("글자색");
 	JButton jbtn_exit	  = new JButton("나가기");
-	JButton jbtn_del = new JButton("삭제");
+	JButton jbtn_del = new JButton("회원탈퇴");
 	String cols[] 		  = {"대화명"};
 	String data[][] 	  = new String[0][1];
 	DefaultTableModel dtm = new DefaultTableModel(data,cols);
@@ -57,7 +61,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	JButton jbtn_send  = new JButton("전송");//south속지 east
 	JTextArea jta_display = null;
 	JScrollPane jsp_display = null;
-	
+	MemberListFrame mbl = null;
 	
 	public SocketClient() {
 
@@ -71,24 +75,11 @@ public class SocketClient extends JFrame implements ActionListener {
 
 
 
-	/**
-	 * 막히는 부분 정리
-	 * 1. 닉네임을 넘겨 받았음 근데 닉네임을 갖고 온 클라이언트에서 엔터, 전송, 1:1 대화, 닉네임 변경이 안된다. ->why? initDisplay 문제는 아니다. actionPerformed에서 닉네임을 읽어오지 못하는 것인가?
-	 * 
-	 */
+
 	public void initDisplay() {
 		
 
-	    // 사용 가능한 닉네임 중 하나를 선택
-//	    nickName = (String) JOptionPane.showInputDialog(this, "사용 가능한 닉네임을 선택하세요:", "닉네임 선택",
-//	        JOptionPane.PLAIN_MESSAGE, null, availableNicknames.toArray(), availableNicknames.get(0));
-//
-//	    if (nickName == null) {
-//	        JOptionPane.showMessageDialog(this, "닉네임을 선택해야 합니다. 프로그램을 종료합니다.", "알림", JOptionPane.ERROR_MESSAGE);
-//	        System.exit(0);
-//	    }
-		//사용자의 닉네임 받기
-		//nickName = JOptionPane.showInputDialog("닉네임을 입력하세요.");
+		jbtn_list.addActionListener(this);
 		jbtn_del.addActionListener(this);
 		jbtn_send.addActionListener(this);
 		jtf_msg.addActionListener(this);
@@ -101,8 +92,8 @@ public class SocketClient extends JFrame implements ActionListener {
 		jp_second_south.setLayout(new GridLayout(2,2));
 		jp_second_south.add(jbtn_change);
 		jp_second_south.add(jbtn_del);
-		
-		jp_second_south.add(jbtn_font);
+		jp_second_south.add(jbtn_del);
+		jp_second_south.add(jbtn_list);
 		jp_second_south.add(jbtn_exit);
 		jp_second.add("South",jp_second_south);
 		jp_first.setLayout(new BorderLayout());
@@ -191,26 +182,53 @@ public class SocketClient extends JFrame implements ActionListener {
 						   +"#"+nickName
 						   +"#"+msg);
 				jtf_msg.setText("");
+				
 			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
+			}}
+
 		
 		else if (jbtn_del == obj) {
-//			int selected=jtb.getSelectedRow();
-//			removeRecord(selected);
+			/**
+			 * 리팩토링 시작 
+			 * 
+			 */
+			String del = "회원탈퇴.";
+			try {
+				oos.writeObject(210
+						   +"#"+nickName
+						   +"#"+del);
+				jtf_msg.setText("");
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 			 deleteSelectedRow();
+			
+			
+			 
 		}
 			
-		
+		 
+		else if(jbtn_list == obj)
+		{
+			mbl = new MemberListFrame();
+			
+		}
 		
 		else if(jbtn_exit==obj) {
 			try {
-				oos.writeObject(500+"#"+this.nickName);
-				//자바가상머신과 연결고리 끊기
-				System.exit(0);
+
+			    try {
+			        oos.writeObject(210 + "#" + nickName + "#");
+			    } catch (IOException e) {
+			        e.printStackTrace();
+			    }
+			    
+				logout();
+				dispose();
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 		
@@ -234,51 +252,27 @@ public class SocketClient extends JFrame implements ActionListener {
 		}
 	}//////////////////////end of actionPerformed
 
-
 	
-
-//	public void deleteSelectedRow() {
-//	    int index = jtb.getSelectedRow();
-//	    if (index < 0) {
-//	        JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하시오.", "INFO", JOptionPane.INFORMATION_MESSAGE);
-//	        return;
-//	    }
-//	    String nicknameToDelete = (String) jtb.getValueAt(index, 0);
-//
-//	    MemberDao dao = MemberDao.getInstance();
-//	    int result = dao.deleteMemberByNickname(nicknameToDelete);
-//	    
-//	    if (result == 1) {
-//	        JOptionPane.showMessageDialog(this, "삭제 성공하였습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
-//	        refreshTable();
-//	    } else {
-//	        JOptionPane.showMessageDialog(this, "삭제에 실패했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
-//	    }
-//	}
-//
-//	public void removeRecord(int index) {
-//		DefaultTableModel model=(DefaultTableModel)jtb.getModel();
-//		if(index<0) {
-//			if(jtb.getRowCount()==0)//비어있는 테이블이면
-//				return;
-//			index=0;
-//		}
-//		model.removeRow(index);
-//	}
-//	public void refreshTable() {
-//		 
-//	    while (dtm.getRowCount() > 0) {
-//	        dtm.removeRow(0);
-//	    }
-//	    
-//	    MemberDao dao = MemberDao.getInstance();
-//	    Vector<String> nicknames = dao.findNickName();
-//	    
-//	    for (String nickname : nicknames) {
-//	        dtm.addRow(new String[] { nickname });
+	public void logout()
+	{
+		 int selectedRow = jtb.getSelectedRow();
+		 LoginForm lf = new LoginForm();
+		 DefaultTableModel model = (DefaultTableModel) jtb.getModel();
+		 model.removeRow(selectedRow);
+		 JOptionPane.showMessageDialog(this, "로그아웃 성공했습니다..", "Info", JOptionPane.INFORMATION_MESSAGE);
+		 dispose();
+	}
+	
+	// 클라이언트에서 회원 탈퇴 요청 메서드
+//	public void requestLogout() {
+//	    try {
+//	        oos.writeObject(210 + "#" + nickName + "#");
+//	    } catch (IOException e) {
+//	        e.printStackTrace();
 //	    }
 //	}
 	
+
 	public void deleteSelectedRow() {
 	    int selectedRow = jtb.getSelectedRow();
 	    MemberDao dao = MemberDao.getInstance();
@@ -288,6 +282,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	    }
 
 	    String nicknameToDelete = (String) jtb.getValueAt(selectedRow, 0);
+	    //선택한 행에서 닉네임 데이터를 추출하여 nicknameToDelete 변수에 저장
 
 	    int result = dao.deleteMemberByNickname(nicknameToDelete);
 
@@ -295,6 +290,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	        DefaultTableModel model = (DefaultTableModel) jtb.getModel();
 	        model.removeRow(selectedRow);
 	        JOptionPane.showMessageDialog(this, "성공적으로 삭제됐습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        
 	    } else {
 	        JOptionPane.showMessageDialog(this, "삭제 실패했습니다..", "Error", JOptionPane.ERROR_MESSAGE);
 	    }

@@ -43,6 +43,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	// JPanel에 쓰일 이미지아이콘
 	ImageIcon ig = new ImageIcon(imgPath+"main.png");
 	MemberShipView mbv = new MemberShipView(this);
+	
 
 	/////////////////////////////////////////////////////
 	/* 생성자 */
@@ -131,7 +132,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
-				 String nickName = dao.findNicknameByUsernameAndPassword(username, password);
+				String nickName = dao.findNicknameByUsernameAndPassword(username, password);
 				SocketClient sc = new SocketClient(nickName);
 				sc.initDisplay();
 				sc.init();

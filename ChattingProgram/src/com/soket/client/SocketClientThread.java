@@ -61,7 +61,8 @@ public class SocketClientThread extends Thread {
 						}
 						tc.jta_display.append(message+"\n");
 					}break;
-					case 500:{
+					
+					case 210:{
 						String nickName = st.nextToken();
 						tc.jta_display.append(nickName+"님이 퇴장 하였습니다.\n");
 						tc.jta_display.setCaretPosition
@@ -71,6 +72,9 @@ public class SocketClientThread extends Thread {
 							if(n.equals(nickName)) {
 								tc.dtm.removeRow(i);
 							}
+							/**
+							 * 2개의 창을 띄운다고 가정했을 때 한쪽에서 삭제하면 다른 한쪽에서 회원탈퇴한 내용을 반영하고 싶은데 어떻게 해야돼?
+							 */
 						}
 					}break;
 				}////////////end of switch
