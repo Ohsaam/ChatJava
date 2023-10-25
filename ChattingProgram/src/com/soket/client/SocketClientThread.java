@@ -16,16 +16,16 @@ public class SocketClientThread extends Thread {
 		boolean isStop = false;
 		while(!isStop) {
 			try {
-				String msg = "";//100#apple
-				msg = (String)tc.ois.readObject();
-				StringTokenizer st = null;
-				int protocol = 0;//100|200|201|202|500
+				String msg = ""; 
+				msg = (String)tc.ois.readObject(); 
+				StringTokenizer st = null; 
+				int protocol = 0;
 				if(msg !=null) {
 					st = new StringTokenizer(msg,"#");
-					protocol = Integer.parseInt(st.nextToken());//100
+					protocol = Integer.parseInt(st.nextToken());
 				}
 				switch(protocol) {
-					case 100:{//100#apple
+					case 100:{
 						String nickName = st.nextToken();
 						tc.jta_display.append(nickName+"님이 입장하였습니다.\n");
 						Vector<String> v = new Vector<>();
@@ -53,14 +53,18 @@ public class SocketClientThread extends Thread {
 								tc.dtm.setValueAt(afterName, i, 0);
 								break;
 							}
-						}
+							/**
+							 * 클라이언트의 대화명 목록을 나타내는 테이블(tc.dtm)을 순회하면서, 
+							 * nickName과 일치하는 행을 찾아 afterName으로 대화명을 변경
+							 */
 						//채팅창에 타이틀바에도 대화명을 변경처리 한다.
 						if(nickName.equals(tc.nickName)) {
 							tc.setTitle(afterName+"님의 대화창");
 							tc.nickName = afterName;
 						}
+						
 						tc.jta_display.append(message+"\n");
-					}break;
+					}}break;
 					
 					case 210:{
 						String nickName = st.nextToken();
@@ -72,9 +76,7 @@ public class SocketClientThread extends Thread {
 							if(n.equals(nickName)) {
 								tc.dtm.removeRow(i);
 							}
-							/**
-							 * 2개의 창을 띄운다고 가정했을 때 한쪽에서 삭제하면 다른 한쪽에서 회원탈퇴한 내용을 반영하고 싶은데 어떻게 해야돼?
-							 */
+
 						}
 					}break;
 				}////////////end of switch

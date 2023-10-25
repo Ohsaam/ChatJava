@@ -8,41 +8,59 @@ import java.util.StringTokenizer;
 
 
 public class SocketServerThread extends Thread {
-	public SocketServer ts = null;
+	public SocketServer ss = null;
 	Socket client = null;
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;
 	String chatName = null;//현재 서버에 입장한 클라이언트 스레드 닉네임 저장
-	public SocketServerThread(SocketServer ts) {
-		this.ts = ts;
-		this.client = ts.socket;
+	
+	
+	public SocketServerThread(SocketServer ss) {
+		this.ss = ss;
+		this.client = ss.socket;
 		try {
 			oos = new ObjectOutputStream(client.getOutputStream());
 			ois = new ObjectInputStream(client.getInputStream());
 			String msg = (String)ois.readObject();
-			ts.jta_log.append(msg+"\n");
+			
+			ss.jta_log.append(msg+"\n");
 			StringTokenizer st = new StringTokenizer(msg,"#");
-			st.nextToken();//100
+			st.nextToken();
 			chatName = st.nextToken();
-			ts.jta_log.append(chatName+"님이 입장하였습니다.\n");
-			for(SocketServerThread tst:ts.globalList) {
+			ss.jta_log.append(chatName+"님이 입장하였습니다.\n");
+			
+			for(SocketServerThread sst:ss.globalList) {
 			//이전에 입장해 있는 친구들 정보 받아내기
 				//String currentName = tst.chatName;
-				this.send(100+"#"+tst.chatName);
+				/**
+				 * tst.chatName은 새로 연결된 클라이언트의 대화명
+				 * ts.globalList에 있는 모든 SocketServerThread 객체를 순회 
+				 * 이 리스트에는 이전에 서버에 접속한 클라이언트 스레드의 목록이다.
+				 */
+				this.send(100+"#"+sst.chatName);
+				
+				/**
+				 * 클라이언트 스레드의 대화명을 나타낸다. 
+				 * 새로 연결된 클라이언트의 대화명이 아니라, 현재 연결된 클라이언트의 대화명을 의미
+				 */
 			}
 			//현재 서버에 입장한 클라이언트 스레드 추가하기
-			ts.globalList.add(this);
+			ss.globalList.add(this);
 			this.broadCasting(msg);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
+	
+	
 	//현재 입장해 있는 친구들 모두에게 메시지 전송하기 구현
 	public void broadCasting(String msg) {
-		for(SocketServerThread tst:ts.globalList) {
-			tst.send(msg);
+		for(SocketServerThread sst:ss.globalList) {
+			sst.send(msg);
 		}
 	}
+	
+	
 	public void LogoutRequest(String nickName) {
 	    try {
 	        String message = nickName + "님이 퇴장하였습니다.";
@@ -56,9 +74,9 @@ public class SocketServerThread extends Thread {
 
 	// 사용자 목록에서 사용자 제거
 	public void removeList(String nickName) {
-	    for (SocketServerThread tst : ts.globalList) {
-	        if (tst != null && tst.chatName.equals(nickName)) {
-	            ts.globalList.remove(tst);
+	    for (SocketServerThread sst : ss.globalList) {
+	        if (sst != null && sst.chatName.equals(nickName)) {
+	            ss.globalList.remove(sst);
 	            break;
 	        }
 	    }
@@ -66,12 +84,16 @@ public class SocketServerThread extends Thread {
 
 	
 	// 사용자 목록을 클라이언트에게 전송
-	public void sendUserList(SocketServerThread clientThread) throws IOException {
-	    StringBuilder userListMessage = new StringBuilder("100#");
-	    for (SocketServerThread t : ts.globalList) {
-	        userListMessage.append(t.chatName).append("#");
+	//서버에 접속할 때 또는 사용자 목록을 요청할 때 사용
+	public void sendUserList(SocketServerThread cthread) throws IOException {
+	    StringBuilder userListMessage = new StringBuilder("100#"); // 목록 메시지를 만들기 위한 문자열 빌더
+	    for (SocketServerThread sst : ss.globalList) {
+	        userListMessage.append(sst.chatName).append("#");
 	    }
-	    clientThread.send(userListMessage.toString());
+	    /**
+	     * 루프 내에서, 각 클라이언트 스레드 sst의 chatName을 가져와서 userListMessage에 # 문자와 함께 추가한다.
+	     */
+	    cthread.send(userListMessage.toString());
 	}
 	
 	//클라이언트에게 말하기 구현
@@ -82,6 +104,8 @@ public class SocketServerThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	public void run() {
 		String msg = null;
 		boolean isStop = false;
@@ -90,9 +114,9 @@ public class SocketServerThread extends Thread {
 			run_start:
 			while(!isStop) {
 				msg = (String)ois.readObject();
-				ts.jta_log.append(msg+"\n");
-				ts.jta_log.setCaretPosition
-				(ts.jta_log.getDocument().getLength());
+				ss.jta_log.append(msg+"\n");
+				ss.jta_log.setCaretPosition
+				(ss.jta_log.getDocument().getLength());
 				StringTokenizer st = null;
 				int protocol = 0;//100|200|201|202|500
 				if(msg !=null) {
@@ -135,7 +159,7 @@ public class SocketServerThread extends Thread {
 
 					case 500:{
 						String nickName = st.nextToken();
-						ts.globalList.remove(this);
+						ss.globalList.remove(this);
 						broadCasting(500
 								+"#"+nickName);
 					}break run_start;

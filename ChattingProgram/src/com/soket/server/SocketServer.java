@@ -24,6 +24,15 @@ public class SocketServer extends JFrame implements Runnable{
 			                                         ,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
 			                                         ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	JPanel 		jp_north = new JPanel();
+	/**globalList
+	 * 
+	 * SocketServer 클래스는 서버의 주요 역할과 로직을 담당
+	 * 서버 소켓을 열고 클라이언트의 연결 요청을 수락하는 역할을 하며, 
+	 * 각 클라이언트의 연결이 이루어질 때 
+	 * SocketServerThread를 생성하여 클라이언트와의 통신을 처리한다.
+	 * SocketServer 클래스는 서버의 전체 동작을 관리하고, 따라서 모든 클라이언트 스레드의 목록도 관리해야한다.
+	 * 
+	 */
 	public void initDisplay() {
 		jp_north.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jta_log.setBackground(Color.orange);
