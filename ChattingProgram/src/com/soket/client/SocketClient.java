@@ -184,6 +184,7 @@ public class SocketClient extends JFrame implements ActionListener {
 
 		
 		else if (jbtn_del == obj) {
+			 deleteSelectedRow();
 
 			String del = "회원탈퇴.";
 			try {
@@ -196,7 +197,6 @@ public class SocketClient extends JFrame implements ActionListener {
 				// TODO: handle exception
 			}
 			
-			// deleteSelectedRow();
 			
 			
 			 
@@ -211,14 +211,13 @@ public class SocketClient extends JFrame implements ActionListener {
 		
 		else if(jbtn_exit==obj) {
 			try {
-
+				logout();
 			    try {
 			        oos.writeObject(210 + "#" + nickName + "#");
 			    } catch (IOException e) {
 			        e.printStackTrace();
 			    }
 			    
-				logout();
 				dispose();
 			} catch (Exception e) {
 				
@@ -252,9 +251,31 @@ public class SocketClient extends JFrame implements ActionListener {
 		 LoginForm lf = new LoginForm();
 		 DefaultTableModel model = (DefaultTableModel) jtb.getModel();
 		 model.removeRow(selectedRow);
-		 JOptionPane.showMessageDialog(this, "로그아웃 성공했습니다..", "Info", JOptionPane.INFORMATION_MESSAGE);
+		 JOptionPane.showMessageDialog(this, "로그아웃 성공했습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
 		 dispose();
 	}
 	
+	public void deleteSelectedRow() {
+	    int selectedRow = jtb.getSelectedRow();
+	    MemberDao dao = MemberDao.getInstance();
+	    if (selectedRow < 0) {
+	        JOptionPane.showMessageDialog(this, "아이디를 고르세요", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        return;
+	    }
+
+	    String nicknameToDelete = (String) jtb.getValueAt(selectedRow, 0);
+	    //선택한 행에서 닉네임 데이터를 추출하여 nicknameToDelete 변수에 저장
+
+	    int result = dao.deleteMemberByNickname(nicknameToDelete);
+
+	    if (result > 0) {
+	        DefaultTableModel model = (DefaultTableModel) jtb.getModel();
+	        model.removeRow(selectedRow);
+	        JOptionPane.showMessageDialog(this, "성공적으로 회원탈퇴됐습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	        
+	    } else {
+	        JOptionPane.showMessageDialog(this, "회원탈퇴 실패했습니다.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
 
 }

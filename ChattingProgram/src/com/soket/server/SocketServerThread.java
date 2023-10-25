@@ -94,6 +94,7 @@ public class SocketServerThread extends Thread {
 	     * 루프 내에서, 각 클라이언트 스레드 sst의 chatName을 가져와서 userListMessage에 # 문자와 함께 추가한다.
 	     */
 	    cthread.send(userListMessage.toString());
+	    System.out.println("회원탈퇴");
 	}
 	
 	//클라이언트에게 말하기 구현

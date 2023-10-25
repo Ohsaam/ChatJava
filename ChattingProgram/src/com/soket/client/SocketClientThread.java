@@ -68,7 +68,7 @@ public class SocketClientThread extends Thread {
 					
 					case 210:{
 						String nickName = st.nextToken();
-						tc.jta_display.append(nickName+"님이 퇴장 하였습니다.\n");
+						tc.jta_display.append(nickName+"님이 회원탈퇴 했습니다.\n");
 						tc.jta_display.setCaretPosition
 						(tc.jta_display.getDocument().getLength());
 						for(int i=0;i<tc.dtm.getRowCount();i++) {
