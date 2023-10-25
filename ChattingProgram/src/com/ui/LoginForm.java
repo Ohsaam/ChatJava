@@ -85,6 +85,7 @@ public class LoginForm extends JFrame implements ActionListener {
 				System.exit(0);
 			}
 		});
+		
 		// id 라인
 		jlb_id.setBounds(45, 200, 80, 40);
 		jlb_id.setFont(jl_font);
