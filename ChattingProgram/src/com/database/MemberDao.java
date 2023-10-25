@@ -37,6 +37,7 @@ public class MemberDao {
 			//(2) executeUpdate() = insert, update, delete = 리턴 없음.
 			rs = pstmt.executeQuery();
 			
+			
 			//5. rs는 query한 결과의 첫번째 행(레코드) 직전에 대기중
 			//결과가 count(*) 그룹함수이기 때문에 1개의 행이 리턴됨. while문이 필요 없음.
 			if(rs.next()) { //next()함수는 커서를 한칸 내리면서 해당 행에 데이터가 있으면 true, 없으면 false 반환
@@ -110,7 +111,7 @@ public class MemberDao {
 	    return null;
 	}
 	
-	public String findNicknameByUsernameAndPassword(String username, String password) {
+	public String findNickname(String username, String password) {
 	    conn = DBConnection.getConnection();
 	    
 	    try {
@@ -122,6 +123,9 @@ public class MemberDao {
 	         *  메소드는 현재 레코드의 다음 레코드로 이동하고, 다음 레코드가 있으면 true를 반환하고,
 	         *  레코드가 없으면 false를 반환
 	         */
+
+	        rs = pstmt.executeQuery();
+	        
 	        if (rs.next()) {
 	            return rs.getString("nickname");
 	        }
@@ -140,6 +144,8 @@ public class MemberDao {
 	        pstmt = conn.prepareStatement("DELETE FROM member WHERE nickname = ?");
 	        pstmt.setString(1, nicknameToDelete);
 
+
+	        
 	        int rowCount = pstmt.executeUpdate();
 
 	        return rowCount; // 삭제된 레코드 수 반환

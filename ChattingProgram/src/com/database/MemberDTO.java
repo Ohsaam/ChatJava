@@ -3,7 +3,6 @@ package com.database;
 import java.io.Serializable;
 
 public class MemberDTO implements Serializable{
-	private static final int MINMUM_INPUT = 1;
 	private String username;
 	private String password;
 	private String nickname;

@@ -24,7 +24,7 @@ public class LoginForm extends JFrame implements ActionListener {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
-	String imgPath="C:\\Users\\GDJ\\Desktop\\ChatJava\\ChattingProgram\\src\\image\\";
+	String imgPath="C:\\Users\\ohjih\\OneDrive\\바탕 화면\\ChatJava\\ChattingProgram\\src\\image\\";
 	// 
 	//D:\WorkSpace_Java\Java\dev_java\\src\image\\;
 	JLabel jlb_id = new JLabel("아이디");
@@ -132,7 +132,7 @@ public class LoginForm extends JFrame implements ActionListener {
 		else if (obj == jbtn_login) {
 			if (rs == 1){
 				JOptionPane.showMessageDialog(null, "로그인 성공");
-				String nickName = dao.findNicknameByUsernameAndPassword(username, password);
+				String nickName = dao.findNickname(username, password);
 				SocketClient sc = new SocketClient(nickName);
 				sc.initDisplay();
 				sc.init();

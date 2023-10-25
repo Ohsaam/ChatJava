@@ -120,86 +120,12 @@ public class MemberShipView extends JDialog implements ActionListener{
     }
     
 
-//    public MemberShipView()
-//    {
-//        jbtn_ins.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				Object obj = e.getSource();
-//				MemberDTO member = new MemberDTO();
-//				member.setId(jtf_id.getText());
-//				member.setPw(jtf_pw.getText());
-//				member.setNickName(jtf_nickName.getText());
-//				member.setGender(jlb_gender.getText());
-//				member.setZipcode(jtf_zipcode.getText());
-//				member.setAddress(jtf_address.getText());
-//				
-//				MemberDao dao = MemberDao.getInstance();
-//				int result = dao.save(member);
-//			
-//				if(result == 1) {
-//					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
-//					dispose();
-//				}else {
-//					JOptionPane.showMessageDialog(null, "회원가입이 실패하였습니다.");
-//					dispose();
-//				}	
-//			}
-//		});
-//
-//	}
-    
-//    @Override
-//	public void actionPerformed(ActionEvent e) {
-//    	
-//		Object obj = e.getSource();
-//		MemberDTO member = new MemberDTO();
-//		member.setId(jtf_id.getText());
-//		member.setPw(jtf_pw.getText());
-//		member.setNickName(jtf_nickName.getText());
-//		String selectedGender = (String) jcb_gender.getSelectedItem();
-//		member.setGender(selectedGender);
-//		member.setZipcode(jtf_zipcode.getText());
-//		member.setAddress(jtf_address.getText());
-//		
-//		
-//    	if(obj == jbtn_zipcode) 
-//    	{
-//    		zv.initDisplay();
-//    	}
-////    	else if(result == 1) {
-////			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
-////			dispose();
-////		}else if(result == -1) {
-////			JOptionPane.showMessageDialog(null, "회원가입이 실패하였습니다.");
-////			dispose();
-////
-////			
-////	}
-////		else
-////		{
-////			
-////		}
-////    
-////	
-////}}
-
-
-    
    
     	
     @Override
     public void actionPerformed(ActionEvent e) {
     	System.out.println("action");
         Object obj = e.getSource();
-//        MemberDTO member = new MemberDTO();
-//        member.setUsername(jtf_id.getText());
-//        member.setPassword(jpf_pw.getText());
-//        member.setNickname(jtf_nickName.getText());
-//        MemberDao dao = MemberDao.getInstance();
-//        String nickName = jtf_nickName.getText();
-//        int rs = dao.save(member);
         
         
         

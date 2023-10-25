@@ -48,7 +48,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	JButton jbtn_change	  = new JButton("대화명변경");
 	JButton jbtn_list	  = new JButton("회원 리스트");
 	JButton jbtn_font	  = new JButton("글자색");
-	JButton jbtn_exit	  = new JButton("나가기");
+	JButton jbtn_exit	  = new JButton("로그아웃");
 	JButton jbtn_del = new JButton("회원탈퇴");
 	String cols[] 		  = {"대화명"};
 	String data[][] 	  = new String[0][1];
@@ -124,17 +124,13 @@ public class SocketClient extends JFrame implements ActionListener {
 	public void init() {
 		try {
 			//서버측의 ip주소 작성하기
-			socket = new Socket("172.16.2.7",3002);
+			socket = new Socket("172.30.1.66",3002);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
-			//initDisplay에서 닉네임이 결정된 후 init메소드가 호출되므로
-			//서버에게 내가 입장한 사실을 알린다.(말하기)
 			oos.writeObject(100+"#"+nickName);
-			//서버에 말을 한 후 들을 준비를 한다.
 			SocketClientThread tct = new SocketClientThread(this);
 			tct.start();
 		} catch (Exception e) {
-			//예외가 발생했을 때 직접적인 원인되는 클래스명 출력하기
 			System.out.println(e.toString());
 		}
 	}
@@ -188,10 +184,7 @@ public class SocketClient extends JFrame implements ActionListener {
 
 		
 		else if (jbtn_del == obj) {
-			/**
-			 * 리팩토링 시작 
-			 * 
-			 */
+
 			String del = "회원탈퇴.";
 			try {
 				oos.writeObject(210
@@ -203,7 +196,7 @@ public class SocketClient extends JFrame implements ActionListener {
 				// TODO: handle exception
 			}
 			
-			 deleteSelectedRow();
+			// deleteSelectedRow();
 			
 			
 			 
@@ -263,36 +256,5 @@ public class SocketClient extends JFrame implements ActionListener {
 		 dispose();
 	}
 	
-	// 클라이언트에서 회원 탈퇴 요청 메서드
-//	public void requestLogout() {
-//	    try {
-//	        oos.writeObject(210 + "#" + nickName + "#");
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	    }
-//	}
-	
 
-	public void deleteSelectedRow() {
-	    int selectedRow = jtb.getSelectedRow();
-	    MemberDao dao = MemberDao.getInstance();
-	    if (selectedRow < 0) {
-	        JOptionPane.showMessageDialog(this, "삭제할 부분을 고르세요", "Info", JOptionPane.INFORMATION_MESSAGE);
-	        return;
-	    }
-
-	    String nicknameToDelete = (String) jtb.getValueAt(selectedRow, 0);
-	    //선택한 행에서 닉네임 데이터를 추출하여 nicknameToDelete 변수에 저장
-
-	    int result = dao.deleteMemberByNickname(nicknameToDelete);
-
-	    if (result > 0) {
-	        DefaultTableModel model = (DefaultTableModel) jtb.getModel();
-	        model.removeRow(selectedRow);
-	        JOptionPane.showMessageDialog(this, "성공적으로 삭제됐습니다.", "Info", JOptionPane.INFORMATION_MESSAGE);
-	        
-	    } else {
-	        JOptionPane.showMessageDialog(this, "삭제 실패했습니다..", "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
 }
