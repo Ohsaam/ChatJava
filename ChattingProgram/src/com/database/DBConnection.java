@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 public class DBConnection {
 	public static Connection getConnection() {
 		Connection conn=null;
-		String url="jdbc:oracle:thin:@172.30.1.66:1522:orcl11";
+		String url="jdbc:oracle:thin:@172.16.2.7:1521:orcl11";
 		String id="scott";
 		String pw="tiger";
 		String driver="oracle.jdbc.driver.OracleDriver";

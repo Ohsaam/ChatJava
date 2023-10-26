@@ -124,7 +124,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	public void init() {
 		try {
 			//서버측의 ip주소 작성하기
-			socket = new Socket("172.30.1.66",3002);
+			socket = new Socket("172.16.2.7",3002);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos.writeObject(100+"#"+nickName);

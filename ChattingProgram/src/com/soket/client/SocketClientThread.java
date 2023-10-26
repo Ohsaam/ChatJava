@@ -5,9 +5,9 @@ import java.util.Vector;
 
 
 public class SocketClientThread extends Thread {
-	SocketClient tc = null;
-	public SocketClientThread(SocketClient tc) {
-		this.tc = tc;
+	SocketClient sc = null;
+	public SocketClientThread(SocketClient sc) {
+		this.sc = sc;
 	}
 	/*
 	 * 서버에서 말한 내용을 들어봅시다.
@@ -17,7 +17,7 @@ public class SocketClientThread extends Thread {
 		while(!isStop) {
 			try {
 				String msg = ""; 
-				msg = (String)tc.ois.readObject(); 
+				msg = (String)sc.ois.readObject(); 
 				StringTokenizer st = null; 
 				int protocol = 0;
 				if(msg !=null) {
@@ -27,10 +27,10 @@ public class SocketClientThread extends Thread {
 				switch(protocol) {
 					case 100:{
 						String nickName = st.nextToken();
-						tc.jta_display.append(nickName+"님이 입장하였습니다.\n");
+						sc.jta_display.append(nickName+"님이 입장하였습니다.\n");
 						Vector<String> v = new Vector<>();
 						v.add(nickName);
-						tc.dtm.addRow(v);
+						sc.dtm.addRow(v);
 					}break;
 					case 200:{
 						
@@ -38,19 +38,19 @@ public class SocketClientThread extends Thread {
 					case 201:{
 						String nickName = st.nextToken();
 						String message = st.nextToken();
-						tc.jta_display.append("["+nickName+"]"+message+"\n");
-						tc.jta_display.setCaretPosition
-						(tc.jta_display.getDocument().getLength());					
+						sc.jta_display.append("["+nickName+"]"+message+"\n");
+						sc.jta_display.setCaretPosition
+						(sc.jta_display.getDocument().getLength());					
 					}break;
 					case 202:{
 						String nickName = st.nextToken();
 						String afterName = st.nextToken();
 						String message = st.nextToken();
 						//테이블에 대화명 변경하기
-						for(int i=0;i<tc.dtm.getRowCount();i++) {
-							String imsi = (String)tc.dtm.getValueAt(i, 0);
+						for(int i=0;i<sc.dtm.getRowCount();i++) {
+							String imsi = (String)sc.dtm.getValueAt(i, 0);
 							if(nickName.equals(imsi)) {
-								tc.dtm.setValueAt(afterName, i, 0);
+								sc.dtm.setValueAt(afterName, i, 0);
 								break;
 							}
 							/**
@@ -58,23 +58,23 @@ public class SocketClientThread extends Thread {
 							 * nickName과 일치하는 행을 찾아 afterName으로 대화명을 변경
 							 */
 						//채팅창에 타이틀바에도 대화명을 변경처리 한다.
-						if(nickName.equals(tc.nickName)) {
-							tc.setTitle(afterName+"님의 대화창");
-							tc.nickName = afterName;
+						if(nickName.equals(sc.nickName)) {
+							sc.setTitle(afterName+"님의 대화창");
+							sc.nickName = afterName;
 						}
 						
-						tc.jta_display.append(message+"\n");
+						sc.jta_display.append(message+"\n");
 					}}break;
 					
 					case 210:{
 						String nickName = st.nextToken();
-						tc.jta_display.append(nickName+"님이 회원탈퇴 했습니다.\n");
-						tc.jta_display.setCaretPosition
-						(tc.jta_display.getDocument().getLength());
-						for(int i=0;i<tc.dtm.getRowCount();i++) {
-							String n =(String)tc.dtm.getValueAt(i, 0);
+						sc.jta_display.append(nickName+"님이 회원탈퇴 했습니다.\n");
+						sc.jta_display.setCaretPosition
+						(sc.jta_display.getDocument().getLength());
+						for(int i=0;i<sc.dtm.getRowCount();i++) {
+							String n =(String)sc.dtm.getValueAt(i, 0);
 							if(n.equals(nickName)) {
-								tc.dtm.removeRow(i);
+								sc.dtm.removeRow(i);
 							}
 
 						}
