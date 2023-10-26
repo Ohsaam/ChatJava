@@ -79,7 +79,7 @@ public class SocketClient extends JFrame implements ActionListener {
 	public void initDisplay() {
 		
 
-		jbtn_list.addActionListener(this);
+		//jbtn_list.addActionListener(this);
 		jbtn_del.addActionListener(this);
 		jbtn_send.addActionListener(this);
 		jtf_msg.addActionListener(this);
@@ -90,10 +90,11 @@ public class SocketClient extends JFrame implements ActionListener {
 		jp_second.setLayout(new BorderLayout());
 		jp_second.add("Center",jsp);
 		jp_second_south.setLayout(new GridLayout(2,2));
+		jp_second_south.add(jbtn_font);
 		jp_second_south.add(jbtn_change);
 		jp_second_south.add(jbtn_del);
 		jp_second_south.add(jbtn_del);
-		jp_second_south.add(jbtn_list);
+		//jp_second_south.add(jbtn_list);
 		jp_second_south.add(jbtn_exit);
 		jp_second.add("South",jp_second_south);
 		jp_first.setLayout(new BorderLayout());
@@ -203,11 +204,14 @@ public class SocketClient extends JFrame implements ActionListener {
 		}
 			
 		 
-		else if(jbtn_list == obj)
-		{
-			mbl = new MemberListFrame();
-			
-		}
+//		else if(jbtn_list == obj)
+//		{
+//			mbl = new MemberListFrame();
+		 /**
+		  * 해당 부분 리팩토링 예정
+		  */
+//			
+//		}
 		
 		else if(jbtn_exit==obj) {
 			try {
