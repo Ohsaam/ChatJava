@@ -2,7 +2,7 @@
 > **개발기간 : 2023.10.20 ~ 2023.10.26**
 
 <div align="center">
-<img src="https://github.com/Ohsaam/ChatJava/assets/96507825/4a1b59fb-712a-4855-a474-36376593fc52" width="220">
+<img src="https://github.com/Ohsaam/ChatJava/assets/96507825/f166599f-5265-4a3a-a967-9990b27fd378" width="500">
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FOhsaam%2FChatJava&count_bg=%237AE826&title_bg=%23201E1E&icon=&icon_color=%23E7E7E7&title=visit&edge_flat=false)](https://hits.seeyoufarm.com)
 
@@ -31,13 +31,31 @@
 | 채팅페이지  |  전송기능  |
 | :-------------------------------------------: | :------------: |
 |  <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/c8a5c7b3-42d1-4fdf-9a8a-d85f5149a8f8"/> |  <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/97420a62-d7dd-4d02-bfbf-55e3ed039e69"/>|  
-| 강좌 소개 페이지   |  강의 영상 페이지   |  
-| <img width="400" src="![image](https://github.com/Ohsaam/ChatJava/assets/96507825/dafd4412-f3e8-4da9-b892-fc8c925879c9)"/>   |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208038965-43a6318a-7b05-44bb-97c8-b08b0495fba7.png"/>     |
-
+| 회원탈퇴   |  닉네임 변경   |  
+| <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/dafd4412-f3e8-4da9-b892-fc8c925879c9"/>   |  <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/73df6b5b-53f4-4e94-9b25-7c16eae17d0b"/>     |
+| 닉네임변경2   |  글자색   |  
+| <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/099e34b6-ee78-4eea-991e-7dfb53e39c22"/>   |  <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/e1604621-2726-4077-aba7-1a9bbc95bcbc"/>     |
 
 
 
 ---
+
+## 주요 기능 
+
+### ⭐️ 로그인
+- 회원가입, 로그인 2개의 기능 구현
+- 회원가입 시 디비에 저장 되어 있는 ID/Paswword 가져와서 정보가 맞으면 로그인 성공, 틀리면 로그인 실패
+
+### ⭐️ 회원가입
+- 모든 필드을 충족 후 회원가입 가능 구현(유효성 검사)
+- 회원가입 시 ID/Password/Nickname 디비 저장.
+
+### ⭐️ 채팅창
+- 전송/Enter 누르면 사용자에게 메세지 전송 기능 제공
+- 닉네임변경 기능을 이용하여 해당 사용자 닉네임 변경 기능 제공
+- 글자색 버튼 기능으로 채팅창 내 글자색 변경 가능
+- 회원 탈퇴을 이용하여 저장 되어 있는 회원정보 삭제 기능 제공
+- 추후 회원 리스트 CRUD 추가 및 업로드 예정 
 
 ## 시작 가이드
 
@@ -69,3 +87,27 @@ $ cd ChatJava
 - <img src="https://img.shields.io/badge/Java-782A90?style=for-the-badge&logo=java&logoColor=white">
 
 
+## 아키텍쳐
+``` 
+📦com
+ ┣ 📂database
+ ┃ ┣ 📂zipcodeview
+ ┃ ┃ ┗ 📜DBConnectionMgr.java
+ ┃ ┣ 📜DBConnection.java
+ ┃ ┣ 📜MemberDao.java
+ ┃ ┗ 📜MemberDTO.java
+ ┣ 📂soket
+ ┃ ┣ 📂client
+ ┃ ┃ ┣ 📜SocketClient.java
+ ┃ ┃ ┗ 📜SocketClientThread.java
+ ┃ ┗ 📂server
+ ┃ ┃ ┣ 📜Protocol.java
+ ┃ ┃ ┣ 📜SocketServer.java
+ ┃ ┃ ┗ 📜SocketServerThread.java
+ ┗ 📂ui
+ ┃ ┣ 📜LoginForm.java
+ ┃ ┣ 📜MemberListFrame.java
+ ┃ ┣ 📜MemberShipView.java
+ ┃ ┣ 📜Sample.java
+ ┃ ┗ 📜ZipCodeView.java
+```
