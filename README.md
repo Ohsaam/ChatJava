@@ -37,10 +37,18 @@
 | <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/099e34b6-ee78-4eea-991e-7dfb53e39c22"/>   |  <img width="400" src="https://github.com/Ohsaam/ChatJava/assets/96507825/e1604621-2726-4077-aba7-1a9bbc95bcbc"/>     |
 
 
-
+### 프로토콜 설계 
+|  프로토콜 |  전송기능  |
+| :-------------------------------------------: | :------------: |
+|   Login     |  100        |
+|   MESSAGE     |  200        |
+|    CHANGE    |  202       |
+|    DELETE    |  210       |
 ---
 
 ## 주요 기능 
+
+
 
 ### ⭐️ 로그인
 - 회원가입, 로그인 2개의 기능 구현
