@@ -125,9 +125,7 @@ public class SocketServerThread extends Thread {
 					protocol = Integer.parseInt(st.nextToken());//100
 				}
 				switch(protocol) {
-					case 200:{
-						
-					}break;
+
 					case 201:{
 						String nickName = st.nextToken();
 						String message = st.nextToken();
