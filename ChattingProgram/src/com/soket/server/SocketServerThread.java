@@ -95,7 +95,7 @@ public class SocketServerThread extends Thread {
 	     */
 	    cthread.send(userListMessage.toString());
 	    System.out.println("회원탈퇴");
-	}
+	} // 해당 부분 회원목록 버튼 만들 때 사용 예정 -> 메소드 현재까지 사용 x 
 	
 	//클라이언트에게 말하기 구현
 	public void send(String msg) {
