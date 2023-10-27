@@ -63,7 +63,7 @@ public class SocketServerThread extends Thread {
 	
 	public void LogoutRequest(String nickName) {
 	    try {
-	        String message = nickName + "님이 퇴장하였습니다.";
+	        String message = nickName + "님이 탈퇴하였습니다.";
 	        broadCasting(210 + "#" + nickName + "#" + message);
 	        // 사용자 목록 업데이트
 	        removeList(nickName);
@@ -89,7 +89,7 @@ public class SocketServerThread extends Thread {
 	    StringBuilder userListMessage = new StringBuilder("100#"); // 목록 메시지를 만들기 위한 문자열 빌더
 	    for (SocketServerThread sst : ss.globalList) {
 	        userListMessage.append(sst.chatName).append("#");
-	    }
+	    } // 해당 부분 리팩토링 대상 -> 회원목록 구현 예정 시 사용 메소드
 	    /**
 	     * 루프 내에서, 각 클라이언트 스레드 sst의 chatName을 가져와서 userListMessage에 # 문자와 함께 추가한다.
 	     */
