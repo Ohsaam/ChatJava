@@ -1,5 +1,5 @@
 # ChatJava
-> ** 1차 개발기간 : 2023.10.20 ~ 2023.10.26 --> 리팩토링 및 기능 추가 예정**
+> **1차 개발기간 : 2023.10.20 ~ 2023.10.26 --> 리팩토링 및 기능 추가 예정**
 
 <div align="center">
 <img src="https://github.com/Ohsaam/ChatJava/assets/96507825/f166599f-5265-4a3a-a967-9990b27fd378" width="500">
