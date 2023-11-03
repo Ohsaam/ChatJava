@@ -16,6 +16,12 @@ import javax.swing.JTextArea;
 
 public class SocketServer extends JFrame implements Runnable{
 	SocketServerThread 		tst 		= null;
+	/**
+	 * 소켓서버가 하는 역할이 무엇이냐?
+	 * - 서버 소켓을 열고 클라이언트의 연결 요청을 수락하는 역할을 진행한다.
+	 * 
+	 */
+	
 	List<SocketServerThread> 	globalList 	= null;
 	ServerSocket 			server 		= null;
 	Socket 					socket 		= null;

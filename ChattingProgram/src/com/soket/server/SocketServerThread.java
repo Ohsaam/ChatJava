@@ -63,14 +63,19 @@ public class SocketServerThread extends Thread {
 	
 	public void LogoutRequest(String nickName) {
 	    try {
+	    	System.out.println(nickName);
 	        String message = nickName + "님이 탈퇴하였습니다.";
-	        broadCasting(210 + "#" + nickName + "#" + message);
+	        send(210 + "#" + nickName + "#" + message);
 	        // 사용자 목록 업데이트
 	        removeList(nickName);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
+	/**
+	 * 시점이 뒤에 발생하는 사람들은 반영을 못한다.
+	 * @param nickName
+	 */
 
 	// 사용자 목록에서 사용자 제거
 	public void removeList(String nickName) {
@@ -94,8 +99,7 @@ public class SocketServerThread extends Thread {
 	     * 루프 내에서, 각 클라이언트 스레드 sst의 chatName을 가져와서 userListMessage에 # 문자와 함께 추가한다.
 	     */
 	    cthread.send(userListMessage.toString());
-	    System.out.println("회원탈퇴");
-	}
+	}////////////////////end of sendUserList
 	
 	//클라이언트에게 말하기 구현
 	public void send(String msg) {
@@ -104,7 +108,7 @@ public class SocketServerThread extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}/////////////////end of send
 	
 	
 	public void run() {
@@ -144,23 +148,35 @@ public class SocketServerThread extends Thread {
         						+"#"+message);
 					}break;
 					
-					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
-					{
+//					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
+//					{
+//						String nickName = st.nextToken();
+//						String message = st.nextToken();
+//						String del = "회원탈퇴 했습니다.";
+//						broadCasting(210
+//								+"#"+nickName + "#" + del);
+//						oos.writeObject(210 + "#" + nickName + "#"+ del);
+//						LogoutRequest(nickName);
+//						// 이 부분에서 refresh해주는 함수를 구현해야한다.
+//						sendUserList()
+//						
+//						
+//					}break;
+
+					case 210:{
+//						String nickName = st.nextToken();
+//						ss.globalList.remove(this);
+//						broadCasting(500
+//								+"#"+nickName);
 						String nickName = st.nextToken();
 						String message = st.nextToken();
 						String del = "회원탈퇴 했습니다.";
 						broadCasting(210
 								+"#"+nickName + "#" + del);
 						oos.writeObject(210 + "#" + nickName + "#"+ del);
-						
-						
-					}break;
-
-					case 500:{
-						String nickName = st.nextToken();
-						ss.globalList.remove(this);
-						broadCasting(500
-								+"#"+nickName);
+						LogoutRequest(nickName);
+						// 이 부분에서 refresh해주는 함수를 구현해야한다.
+				
 					}break run_start;
 				}/////////////end of switch
 			}/////////////////end of while			

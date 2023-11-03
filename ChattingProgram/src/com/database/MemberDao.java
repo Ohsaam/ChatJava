@@ -8,8 +8,12 @@ import java.util.Vector;
 
 public class MemberDao {
 	private MemberDao() {}
-	private static MemberDao instance=new MemberDao();
+	private static MemberDao instance = null;
 	public static MemberDao getInstance() {
+		if(instance == null)
+		{
+			instance = new MemberDao();
+		}
 		return instance;
 	}
 	
