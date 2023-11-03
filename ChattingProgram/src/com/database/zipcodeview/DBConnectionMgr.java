@@ -16,7 +16,7 @@ public class DBConnectionMgr {
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	public static final String _DRIVER = "oracle.jdbc.driver.OracleDriver";
-	public static final String url = "jdbc:oracle:thin:@172.16.2.7:1521:orcl11";
+	public static final String url = "jdbc:oracle:thin:@172.30.1.66:1522:orcl11";
 	public static final String user = "scott";
 	public static final String pw = "tiger";
 //	

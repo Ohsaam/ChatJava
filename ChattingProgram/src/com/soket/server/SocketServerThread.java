@@ -65,9 +65,9 @@ public class SocketServerThread extends Thread {
 	    try {
 	    	System.out.println(nickName);
 	        String message = nickName + "님이 탈퇴하였습니다.";
-	        send(210 + "#" + nickName + "#" + message);
 	        // 사용자 목록 업데이트
 	        removeList(nickName);
+	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -81,7 +81,7 @@ public class SocketServerThread extends Thread {
 	public void removeList(String nickName) {
 	    for (SocketServerThread sst : ss.globalList) {
 	        if (sst != null && sst.chatName.equals(nickName)) {
-	            ss.globalList.remove(sst);
+	            ss.globalList.remove(this);
 	            break;
 	        }
 	    }
@@ -99,12 +99,9 @@ public class SocketServerThread extends Thread {
 	     * 루프 내에서, 각 클라이언트 스레드 sst의 chatName을 가져와서 userListMessage에 # 문자와 함께 추가한다.
 	     */
 	    cthread.send(userListMessage.toString());
-<<<<<<< HEAD
-	}////////////////////end of sendUserList
-=======
-	    System.out.println("회원탈퇴");
-	} // 해당 부분 회원목록 버튼 만들 때 사용 예정 -> 메소드 현재까지 사용 x 
->>>>>>> edf5d65c9235892b278cc4e942e49c08225383f9
+	}
+	 //  System.out.println("회원탈퇴");
+//} // 해당 부분 회원목록 버튼 만들 때 사용 예정 -> 메소드 현재까지 사용 x 
 	
 	//클라이언트에게 말하기 구현
 	public void send(String msg) {
@@ -178,7 +175,6 @@ public class SocketServerThread extends Thread {
 						String del = "회원탈퇴 했습니다.";
 						broadCasting(210
 								+"#"+nickName + "#" + del);
-						oos.writeObject(210 + "#" + nickName + "#"+ del);
 						LogoutRequest(nickName);
 						// 이 부분에서 refresh해주는 함수를 구현해야한다.
 				
