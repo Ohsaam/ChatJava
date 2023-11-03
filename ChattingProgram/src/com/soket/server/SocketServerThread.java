@@ -63,9 +63,6 @@ public class SocketServerThread extends Thread {
 	
 	public void LogoutRequest(String nickName) {
 	    try {
-	    	System.out.println(nickName);
-	        String message = nickName + "님이 탈퇴하였습니다.";
-	        // 사용자 목록 업데이트
 	        removeList(nickName);
 	        
 	    } catch (Exception e) {
@@ -135,19 +132,14 @@ public class SocketServerThread extends Thread {
 					case 201:{
 						String nickName = st.nextToken();
 						String message = st.nextToken();
-						broadCasting(201
-								   +"#"+nickName
-								   +"#"+message);
+						broadCasting(201+"#"+nickName+"#"+message);
 					}break;
 					case 202:{
 						String nickName = st.nextToken();
 						String afterName = st.nextToken();
 						String message = st.nextToken();
 						this.chatName = afterName;
-						broadCasting(202
-								+"#"+nickName
-								+"#"+afterName
-        						+"#"+message);
+						broadCasting(202+"#"+nickName+"#"+afterName+"#"+message);
 					}break;
 					
 //					case 210: // 삭제 소켓통신 actionPerformed와 연동하여 작성 
@@ -173,8 +165,7 @@ public class SocketServerThread extends Thread {
 						String nickName = st.nextToken();
 						String message = st.nextToken();
 						String del = "회원탈퇴 했습니다.";
-						broadCasting(210
-								+"#"+nickName + "#" + del);
+						broadCasting(210+"#"+nickName + "#" + del);
 						LogoutRequest(nickName);
 						// 이 부분에서 refresh해주는 함수를 구현해야한다.
 				
